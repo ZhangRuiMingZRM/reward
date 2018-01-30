@@ -1,5 +1,5 @@
 <?php
-
+require_once 'RandReward.php';
 class Reward
 {
     public $redis;
@@ -28,18 +28,23 @@ class Reward
         $redis->sadd($person_rewards, $reward_id);
 
         //随机小红包列表(list)
-        $rand_reward_array = $this->splitReward($reward_id, $data['money'], $data['total_num']);
+       /* $rand_reward_array = $this->splitReward($reward_id, $data['money'], $data['total_num']);*/
+        $pipe = $redis->multi(Redis::PIPELINE);
+        $rand_reward = new RandReward();
+        $rand_reward_array = $rand_reward->splitReward($data['money'], $data['total_num'], 100);
         $rand_reward_list = $reward_id . ":splite_list";
         foreach ($rand_reward_array as $item) {
-            $redis->lpush($rand_reward_list, $item);
+            /*$this->log('list_________', $item);*/
+            $pipe->lpush($rand_reward_list, $item);
         }
-
+        /*$redis->lRange($rand_reward_list, 0, -1);*/
         //红包添加红包广场
-        $redis->zadd($this->square, time(), $reward_id);
-        $this->log("reward_id", $reward_id);
+        $pipe->zadd($this->square, time(), $reward_id);
+        $pipe->exec();
+        $this->log("reward_id", $data);
     }
 
-    public function getRewardSpliteList($reward_id)
+    public function getRewardSpliteList($reward_id, $data)
     {
         $redis = $this->redis;
         $rand_reward_array = $this->splitReward($reward_id, $data['money'], $data['total_num']);

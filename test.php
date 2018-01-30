@@ -41,19 +41,27 @@ $reward->createReward($data["user_id"], $data);
 
 
 //添加数据
-/*$user_id = createUuid(4);
+$user_id = createUuid(4);
 $data = redPocketInfo();
 echo "开始时间" . date("Y-m-d H:i:s");
 for($i = 0; $i <= 1000000; $i++){
     $data = redPocketInfo();
-    $reward->log($i, $data);
     $reward->createReward($data["user_id"], $data);
-}*/
-/*echo "结束时间" . date("Y-m-d H:i:s");*/
+    $reward->log("$i","--------");
+}
+echo "结束时间" . date("Y-m-d H:i:s");
 
 //$reward->getRewardSquare(0, -1);
 //抢红包
-$user_id = createUuid(4);
-$reward_id = "9d8867-";
-$reward->gainReward($user_id, $reward_id);
+/*for ($i = 1; $i< 900; $i++ ) {
+    $user_id = createUuid(4);
+    $reward_id = "c50ea9-";
+    $reward->gainReward($user_id, $reward_id);
+    $reward->log('^^^^^^^^^^^^^^^^^^^^^^', $i);
+}*/
+
+/*for ($i = 0; $i < 1000000; $i++){
+    $res = $reward->redis->get($data['user_id']);
+    echo $i ."***" . $res . "\n";
+}*/
 ?>

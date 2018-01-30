@@ -30,11 +30,11 @@ class RandReward
         }
         sort($rewardArr);
         $total_money = array_sum($rewardArr);
-        var_dump("______________" . $total_money);
-        var_dump("______________" . $rewardArr[$rewardNum - 1]);
+        /*var_dump("______________" . $total_money);
+        var_dump("______________" . $rewardArr[$rewardNum - 1]);*/
         $rewardArr[$rewardNum - 1] = round($rewardMoney - ($total_money - $rewardArr[$rewardNum - 1]), 1);
-        var_dump("______________" . $rewardArr[$rewardNum - 1]);
-        var_dump("______________" . array_sum($rewardArr));
+        /*var_dump("______________" . $rewardArr[$rewardNum - 1]);
+        var_dump("______________" . array_sum($rewardArr));*/
         shuffle($rewardArr);
         return $rewardArr;
     }
