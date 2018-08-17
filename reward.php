@@ -88,6 +88,7 @@ class Reward
             return;
         }
         while (true) {
+            $redis->watch($reward_key);
             $rest_num = $redis->hget($reward_key, "rest_num");
             $this->log("------剩余个数-----", $rest_num);
             $lose_num = $redis->hget($reward_key, "lose_num");
@@ -95,7 +96,6 @@ class Reward
             $total_num = $redis->hget($reward_key, "total_num");
             $this->log("------总个数-----", $total_num);
             if ($rest_num - 1 >= 0) {
-                $redis->watch($reward_key);
                 $redis->multi();
                 $redis->RPOP($reward_splite_list);
                 $redis->hincrby($reward_key, "rest_num", -1);
